@@ -1,0 +1,21 @@
+
+Things to create
+-create deck of cards
+-pick cards
+-deal card 
+-players hand
+-dealers hand (show one card)
+-score
+-player options
+	-hit
+	-stay
+-declare a winner 
+
+
+Add Ons/ extras:
+-Money 
+-Split
+-Double
+-Insurance
+-Multiplayers
+-multiple decks
