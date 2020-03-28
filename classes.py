@@ -14,7 +14,6 @@ class Deck:
 
     def deal(self):
         x = self.cards.pop(self.cards.index(random.choice(self.cards)))
-        print(x.value + " of " + x.suit)
         return x
 
 
