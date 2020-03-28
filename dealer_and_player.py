@@ -23,4 +23,5 @@ class Deal():
 
         if self.score > 21 and aces == True:
             self.score -= 10
+        return self.score
 
