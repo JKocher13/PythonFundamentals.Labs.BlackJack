@@ -28,8 +28,9 @@ def hit_or_stand_q() -> str:
         print("What's that bub?")
         hit_or_stand_q()
 
-def player_moves(score: int):
-    
+
+
+def player_moves():
     x = ""
     if player.score < 21 or x == "stand":
         print("Would you like to Hit or Stand?")
@@ -38,15 +39,20 @@ def player_moves(score: int):
             time.sleep(1)
             a = hit_once()
             y = player.hit(a)
-            player_moves(y)
-        print("Your final score is " + str(player.score))
-        return player.score
+            print("Your score is " + str(player.score))
+            player_moves()
+    print("Your final score is " + str(player.score))
+    return player.score
     if player.score == 21:
         print("Congrats your at 21, let\'s see what the dealer has!")
         return player.score
     if player.score > 21 :
         print("You went bust! You lose")
         return player.score
+
+def bust():
+    if player.score > 21:
+        return False
 
 def check_for_black_jack(player1 , player2):
     if player2.calc_score() == 21 and player1.calc_score() == 21:
@@ -58,21 +64,44 @@ def check_for_black_jack(player1 , player2):
     if player2.calc_score() == 21:
         print("Dealer has hit Black Jack!")
         return False
+    else:
+        return True
+
+def dealer_moves():
+    print("Dealer\'s first card is " + dealer.cards[0].value + " of " + dealer.cards[0].suit)
+    time.sleep(1)
+    print("Dealer\'s first second is " + dealer.cards[1].value + " of " + dealer.cards[1].suit)
+    print("Dealer\'s  score is " + str(dealer.score))
+    time.sleep(2)
+    while dealer.score < 17:
+        print("Hit")
+        d = hit_once()
+        dealer.hit(d)
+        print("Dealer\'s  score is " + str(dealer.score))
+        time.sleep(2)
+    print("Dealer final score is " + str(dealer.score))
+    return dealer.score
 
 
 
 
-playing = True
-while playing == True:
-    player = dealer_and_player.Dealer_player()
-    dealer = dealer_and_player.Dealer_player()
-    x = first_deal()
-    player.hand(x[0][0],x[0][1])
-    dealer.hand(x[1][0],x[1][1])
-    playing = check_for_black_jack(player,dealer)
-    print("Dealer is showing " + dealer.cards[0].value + " of " + dealer.cards[0].suit)
-    player.calc_score()
-    print("Player has\n" + player.cards[0].value + " of " + player.cards[0].suit + " and \n" +
-          player.cards[1].value + " of " + player.cards[1].suit)
-    player_final_score = player_moves(player.score)
-    playing = False
+
+player = dealer_and_player.Dealer_player()
+dealer = dealer_and_player.Dealer_player()
+x = first_deal()
+player.hand(x[0][0],x[0][1])
+dealer.hand(x[1][0],x[1][1])
+
+print("Dealer is showing " + dealer.cards[0].value + " of " + dealer.cards[0].suit)
+player.calc_score()
+print("Player has\n" + player.cards[0].value + " of " + player.cards[0].suit + " and \n" +
+      player.cards[1].value + " of " + player.cards[1].suit+"\nYour score is " + str(player.score))
+if check_for_black_jack(player,dealer) == True:
+    player_moves()
+    if player.score <= 21:
+        dealer_moves()
+    
+    if dealer.score > 21 or player.score > dealer.score:
+        print("You Win!")
+    else:
+        print("Dealer Wins!")

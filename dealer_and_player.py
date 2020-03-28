@@ -32,7 +32,6 @@ class Dealer_player():
         self.cards.append(x3)
         print(x3.value + " of " + x3.suit)
         self.calc_score()
-        print("Your score is " + str(self.score))
         return self.score
 
 
@@ -40,12 +39,7 @@ class dealer_moves(Dealer_player):
     def __int__(self, cards, score):
         super().__init__(cards, score)
 
-    def moves(self):
-        print("Dealers first card is" + self.cards[0].value + " of " + self.cards[0].suit)
-        print("Dealers first second is" + self.cards[1].value + " of " + self.cards[1].suit)
-        while self.score < 17:
-            print("Hit")
-            self.hit()
+   
 
 
 class player_moves(Dealer_player):
