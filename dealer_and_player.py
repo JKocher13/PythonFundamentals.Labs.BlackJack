@@ -22,8 +22,8 @@ class Dealer_player():
                 self.score += 11
             else:
                 self.score   += 10
-
         if self.score >= 22 and aces == True:
+
             self.score -= 10
         return self.score
 
@@ -47,4 +47,5 @@ class player_moves(Dealer_player):
         super().__init__(cards, score)
 
     pass
+
 
