@@ -75,11 +75,20 @@ def dealer_moves():
         time.sleep(2)
     print("Dealer final score is " + str(dealer.score))
 
-def announce_moves():
+def announce_deal():
     print("Dealer is showing " + dealer.cards[0].value + " of " + dealer.cards[0].suit)
     player.calc_score()
     print("Player has\n" + player.cards[0].value + " of " + player.cards[0].suit + " and \n" +
       player.cards[1].value + " of " + player.cards[1].suit+"\nYour score is " + str(player.score))
+
+dealer_goes():
+    if player.score > 21:
+        pass
+    else:
+        dealer_moves()
+
+determine_winner():
+    if player.score > 21:
 
 
 
@@ -88,17 +97,9 @@ dealer = dealer_and_player.Dealer_player()
 x = first_deal()
 player.hand(x[0][0],x[0][1])
 dealer.hand(x[1][0],x[1][1])
-announce_moves()
+announce_deal()
 if check_for_black_jack() == True:
     player_moves()
 print("Your final score is " + str(player.score))
-if player.score <= 21:
-    dealer_moves()
-    if dealer.score >= 22:
-        print("You Win!")
-    elif player.score > dealer.score:
-        print("You Win!")
-    else:
-        ("Dealer Wins!")
-else:
-    print("Dealer Wins!")
+dealer_goes()
+determine_winner()

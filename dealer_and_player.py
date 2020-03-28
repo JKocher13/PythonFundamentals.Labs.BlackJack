@@ -22,8 +22,8 @@ class Dealer_player():
                 self.score += 11
             else:
                 self.score   += 10
-
         if self.score >= 22 and aces == True:
+
             self.score -= 10
 
     def hit(self,card3):
@@ -31,5 +31,4 @@ class Dealer_player():
         self.cards.append(x3)
         print(x3.value + " of " + x3.suit)
         self.calc_score()
-
 
