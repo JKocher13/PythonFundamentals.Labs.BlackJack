@@ -1,45 +1,42 @@
 import classes
 
 
-class Deal():
-    def __int__(self, cards, score):
+class Dealer_player():
+    def __init__(self):
         self.cards = []
         self.score = 0
 
-    def hand(self):
-        x1 = classes.Deck.deal()
-        x2 = classes.Deck.deal()
-        self.cards.lst.append(x1, x2)
+
+    def hand(self,card1, card2):
+        self.cards.append(card1)
+        self.cards.append(card2)
 
     def calc_score(self):
         aces = False
+        self.score = 0
         for card in self.cards:
             if card.value.isnumeric():
-                self.score =+ int(card.value)
+                self.score += int(card.value)
             elif card.value == "A":
                 aces = True
-                self.score =+ 11
+                self.score += 11
             else:
-                self.score =+ 10
+                self.score   += 10
 
-        if self.score > 21 and aces == True:
+        if self.score >= 22 and aces == True:
             self.score -= 10
         return self.score
 
-    def hit(self):
-        x3 = classes.Deck.deal()
+    def hit(self,card3):
+        x3 = card3
         self.cards.append(x3)
         print(x3.value + " of " + x3.suit)
         self.calc_score()
-        print("Your score is " + self.score)
+        print("Your score is " + str(self.score))
         return self.score
 
-    def stand(self):
-        self.calc_score()
-        print("Your ending score is " + self.score)
 
-
-class dealer_moves(Deal):
+class dealer_moves(Dealer_player):
     def __int__(self, cards, score):
         super().__init__(cards, score)
 
@@ -51,7 +48,7 @@ class dealer_moves(Deal):
             self.hit()
 
 
-class player_moves(Deal):
+class player_moves(Dealer_player):
     def __int__(self, cards, score):
         super().__init__(cards, score)
 
