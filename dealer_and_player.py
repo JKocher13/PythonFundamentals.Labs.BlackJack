@@ -25,26 +25,11 @@ class Dealer_player():
 
         if self.score >= 22 and aces == True:
             self.score -= 10
-        return self.score
 
     def hit(self,card3):
         x3 = card3
         self.cards.append(x3)
         print(x3.value + " of " + x3.suit)
         self.calc_score()
-        return self.score
 
-
-class dealer_moves(Dealer_player):
-    def __int__(self, cards, score):
-        super().__init__(cards, score)
-
-   
-
-
-class player_moves(Dealer_player):
-    def __int__(self, cards, score):
-        super().__init__(cards, score)
-
-    pass
 
