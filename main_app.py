@@ -81,14 +81,29 @@ def announce_deal():
     print("Player has\n" + player.cards[0].value + " of " + player.cards[0].suit + " and \n" +
       player.cards[1].value + " of " + player.cards[1].suit+"\nYour score is " + str(player.score))
 
-dealer_goes():
-    if player.score > 21:
+def dealer_goes(p_score):
+    if p_score > 21:
         pass
     else:
         dealer_moves()
 
-determine_winner():
-    if player.score > 21:
+def determine_winner(p_score, d_score):
+    if p_score > 21:
+        print("You went bust, you lose")
+    elif p_score == d_score:
+        if p.score == 21:
+            print("You both hit 21! Push")
+        else:
+            print("You both had the same score of " + str(p_score) + ". Push!")
+    elif d_score > 21:
+        print("Dealer went bust! You win!")
+    elif p_score > d_score:
+        print("Player wins with " + str(p_score))
+    elif p_score < d_score:
+        print("Dealer wins with " + str(d_score))
+
+
+
 
 
 
@@ -101,5 +116,5 @@ announce_deal()
 if check_for_black_jack() == True:
     player_moves()
 print("Your final score is " + str(player.score))
-dealer_goes()
-determine_winner()
+dealer_goes(player.score)
+determine_winner(player.score, dealer.score)
