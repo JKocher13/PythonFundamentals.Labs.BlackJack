@@ -3,13 +3,12 @@ import classes
 import functions
 
 
-
 class TestFunctions(unittest.TestCase):
     def __int__(self):
         pass
 
     def test_determine_winner(self):
-        self.assertEqual(functions.determine_winner(21,21), "You both hit 21! Push")
+        self.assertEqual(functions.determine_winner(21, 21), "You both hit 21! Push")
         self.assertEqual(functions.determine_winner(18, 14), "Player wins with 18")
         self.assertEqual(functions.determine_winner(13, 18), "Dealer wins with 18")
         self.assertEqual(functions.determine_winner(40, 18), "You went bust, you lose")
@@ -42,6 +41,7 @@ class TestFunctions(unittest.TestCase):
     def test_announce_deal(self):
         pass
 
+
 class TestCards(unittest.TestCase):
     def __int__(self):
         pass
@@ -50,6 +50,7 @@ class TestCards(unittest.TestCase):
         card = classes.Card(0, 0)
         assert isinstance(card, classes.Card)
         assert isinstance(card, object)
+
 
 class Test_Deck(unittest.TestCase):
     def test__deck_init(self):
@@ -69,24 +70,52 @@ class Test_Deck(unittest.TestCase):
         assert isinstance(card3, classes.Card)
         assert isinstance(card3, object)
 
+
 class test_Dealer_player(unittest.TestCase):
     def __int__(self):
         pass
 
+    def setUp(self):
+        self._player1 = classes.Dealer_player()
+        self._player2 = classes.Dealer_player()
+        self._player3 = classes.Dealer_player()
+        self._player4 = classes.Dealer_player()
+        self._player5 = classes.Dealer_player()
+        self._card1 = classes.Card("Hearts", "8")
+        self._card2 = classes.Card("Spades", "J")
+        self._card3 = classes.Card("Clubs", "10")
+        self._card4 = classes.Card("Diamonds", "2")
+        self._card5 = classes.Card("Clubs", "K")
+        self._card6 = classes.Card("Hearts", "A")
+
+
+
     def test_hand(self):
-        player1 = classes.Dealer_player()
-        player2 = classes.Dealer_player()
-        self.assertEqual(classes.Dealer_player.hand(player1,("10", "Spades"), ("A","Hearts")),
-                         [("10", "Spades"), ("A","Hearts")])
-        self.assertEqual(classes.Dealer_player.hand(player2, ("8", "Diamonds"), ("K", "Clubs")),
-                         [("8", "Diamonds"), ("K", "Clubs")])
+        self.assertEqual(classes.Dealer_player.hand(self._player1, (4 , 5),(5,6)),[(4,5),(5,6)])
+        self.assertIsInstance(classes.Dealer_player.hand(self._player2,self._card1,self._card2),list)
 
     def test_calc_score(self):
+        self._player3.cards.append(self._card1)
+        self._player3.cards.append(self._card2)
+        self._player4.cards.append(self._card5)
+        self._player4.cards.append(self._card6)
+        self._player5.cards.append(self._card5)
+        self._player5.cards.append(self._card6)
+        self._player5.cards.append(self._card4)
+        self.assertEqual(classes.Dealer_player.calc_score(self._player3), 18)
+        self.assertEqual(classes.Dealer_player.calc_score(self._player4), 21)
+        self.assertEqual(classes.Dealer_player.calc_score(self._player5), 13)
 
-
-
-
-
+    def test_hit(self):
+        self._player5.cards.append(self._card5)
+        self._player5.cards.append(self._card6)
+        self._player3.cards.append(self._card1)
+        self._player3.cards.append(self._card2)
+        self._player4.cards.append(self._card6)
+        self._player5.cards.append(self._card4)
+        self.assertEqual(classes.Dealer_player.hit(self._player5, self._card1), 4)
+        self.assertEqual(classes.Dealer_player.hit(self._player3, self._card1), 3)
+        self.assertEqual(classes.Dealer_player.hit(self._player4, self._card1), 2)
 
 if __name__ == '__main__':
     unittest.main()

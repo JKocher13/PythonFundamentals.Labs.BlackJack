@@ -40,6 +40,7 @@ class Dealer_player():
                 self.score += 10
         if self.score >= 22 and aces == True:
             self.score -= 10
+        return self.score
 
 
     def hit(self, card3):
