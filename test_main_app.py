@@ -1,6 +1,10 @@
 import unittest
+import unittest.mock
 import classes
 import functions
+import sys
+import unittest
+import io
 
 
 class TestFunctions(unittest.TestCase):
@@ -107,9 +111,11 @@ class test_Dealer_player(unittest.TestCase):
         self.assertEqual(classes.Dealer_player.calc_score(self._player5), 13)
 
     def test_hit(self):
+        text_trap = io.StringIO()
+        sys.stdout = text_trap
         self._player5.cards.append(self._card5)
         self._player5.cards.append(self._card6)
-        self._player3.cards.append(self._card1)
+        self._player3.cards.append(self._card3)
         self._player3.cards.append(self._card2)
         self._player4.cards.append(self._card6)
         self._player5.cards.append(self._card4)
