@@ -21,7 +21,6 @@ class Deal():
                 self.score =+ 11
             else:
                 self.score =+ 10
-
         if self.score > 21 and aces == True:
             self.score -= 10
         return self.score
@@ -56,4 +55,5 @@ class player_moves(Deal):
         super().__init__(cards, score)
 
     pass
+
 
