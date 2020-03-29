@@ -115,3 +115,4 @@ def determine_winner(p_score: int, d_score: int):
     elif p_score < d_score:
         time.sleep(1)
         return "Dealer wins with " + str(d_score)
+
