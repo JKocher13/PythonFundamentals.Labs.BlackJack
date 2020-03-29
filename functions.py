@@ -66,7 +66,9 @@ def check_for_black_jack(p: object, d: object) -> bool:
 
 
 def dealer_moves(d: object, p: object) -> int:
-    # This functions 
+    # This function takes two objects and prints in detail the first objects cards after initial deal
+    # Then it sees if the first objects score is less then 17, if so it performs a hit sequence until the score is
+    # over 17 or above the players score and when the sequence is done it returns the score of the first object
     print("Dealer\'s first card is " + d.cards[0].value + " of " + d.cards[0].suit)
     time.sleep(2)
     print("Dealer\'s first second is " + d.cards[1].value + " of " + d.cards[1].suit)
@@ -83,14 +85,17 @@ def dealer_moves(d: object, p: object) -> int:
     return d.score
 
 
-def dealer_goes(p_score, d):
+def dealer_goes(p_score: int, d: object):
+    # This function determines if the dealer even needs to go. if p_score is over 21 it returns pass which skips over
+    # The dealer moves function
     if p_score > 21:
         pass
     else:
         return d
 
 
-def determine_winner(p_score, d_score):
+def determine_winner(p_score: int, d_score: int):
+    # This function determines who wins in black jack
     if p_score > 21:
         time.sleep(1)
         return "You went bust, you lose"
