@@ -3,7 +3,10 @@ import time
 
 deck = classes.Deck()
 
+
 def first_deal() -> list:
+    # This function picks out 4 random cards for Deck class and puts them in two sets and returns the two sets as a list
+    # This function serves as a original deal to two players
     a = deck.deal()
     b = deck.deal()
     c = deck.deal()
@@ -15,26 +18,34 @@ def first_deal() -> list:
 
 
 def hit_or_stand_q() -> str:
-    x = ""
-    while x is not "hit" or x is not "stand":
-        x = input("Pick hit or stand\n")
+    # This function works as a repeating question until they supply either hit or stand
+    x = input("Hit or Stand\n").lower()
+    if x == "hit":
         return x
-    return x
+    elif x == "stand":
+        return x
+    else:
+        print("Try again")
+        hit_or_stand_q()
+
 
 def hitting(p):
+    # This functions serves as a loop that allows the player to hit if there score is less then 21
+    # If they hit it allows to hit again as long as their score is over 21. This pattern stops if the player chooses
+    # to stand or and then returns their score
     if p.score < 21:
         hs = hit_or_stand_q()
         if hs == "hit":
             a = deck.deal()
             p.hit(a)
             print("Your score is " + str(p.score))
-            hitting(p)
-        else:
-            return p.score
-    else:
-        return p.score
+            player_moves(p)
 
-def player_moves(p):
+
+def player_moves(p: object) -> str:
+    # This function is invoked when the player is done hitting and checks to see if the players score is at 21 or under
+    # If the player is over 21  then this function does nothing and is skipped over
+    # This function takes one variable (p) which should be an object of the Dealer_player class
     if p.score < 21:
         hitting(p)
         return "Your final score is " + str(p.score)
@@ -42,23 +53,26 @@ def player_moves(p):
         return "Congrats your at 21, let\'s see what the dealer has!"
 
 
-def check_for_black_jack(p, d):
+def check_for_black_jack(p: object, d: object) -> bool:
+    # Takes in two objects and check if their variable, score, is equal to 21 if they are it returns false
+    # if neither is 21 then it returns true
     if p.score == 21:
         print("Dealers second card is " + d.cards[1].value + " of " + d.cards[1].suit)
         return False
-    if d.score == 21:
+    elif d.score == 21:
         return False
     else:
         return True
 
 
-def dealer_moves(d):
+def dealer_moves(d: object, p: object) -> int:
+    # This functions 
     print("Dealer\'s first card is " + d.cards[0].value + " of " + d.cards[0].suit)
     time.sleep(2)
     print("Dealer\'s first second is " + d.cards[1].value + " of " + d.cards[1].suit)
     print("Dealer\'s  score is " + str(d.score))
     time.sleep(2)
-    while d.score < 17:
+    while d.score < 17 and d.score < p.score:
         print("Hit")
         time.sleep(2)
         a = deck.deal()
@@ -66,17 +80,10 @@ def dealer_moves(d):
         print("Dealer\'s  score is " + str(d.score))
         time.sleep(2)
     print("Dealer final score is " + str(d.score))
+    return d.score
 
 
-def announce_deal(d, p):
-    p.calc_score()
-    d.calc_score()
-    print("Dealer is showing " + d.cards[0].value + " of " + d.cards[0].suit)
-    print("Player has\n" + p.cards[0].value + " of " + p.cards[0].suit + " and \n" +
-          p.cards[1].value + " of " + p.cards[1].suit + "\nYour score is " + str(p.score))
-
-
-def dealer_goes(p_score,d):
+def dealer_goes(p_score, d):
     if p_score > 21:
         pass
     else:
@@ -102,9 +109,4 @@ def determine_winner(p_score, d_score):
         return "Player wins with " + str(p_score)
     elif p_score < d_score:
         time.sleep(1)
-        return"Dealer wins with " + str(d_score)
-
-
-
-
-
+        return "Dealer wins with " + str(d_score)

@@ -17,7 +17,7 @@ class Deck:
         return x
 
 
-class Dealer_player():
+class Dealer_player:
     def __init__(self):
         self.cards = []
         self.score = 0

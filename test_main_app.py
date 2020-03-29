@@ -5,11 +5,33 @@ import functions
 import sys
 import unittest
 import io
+from unittest import mock
+from unittest.mock import patch
+import time
 
 
 class TestFunctions(unittest.TestCase):
     def __int__(self):
         pass
+
+    def setUp(self):
+        self._player1 = classes.Dealer_player()
+        self._player2 = classes.Dealer_player()
+        self._player3 = classes.Dealer_player()
+        self._player4 = classes.Dealer_player()
+        self._player5 = classes.Dealer_player()
+        self._card1 = classes.Card("Hearts", "8")
+        self._card2 = classes.Card("Spades", "J")
+        self._card3 = classes.Card("Clubs", "10")
+        self._card4 = classes.Card("Diamonds", "2")
+        self._card5 = classes.Card("Clubs", "K")
+        self._card6 = classes.Card("Hearts", "A")
+        self._player1.hand(self._card6, self._card3)
+        text_trap = io.StringIO()
+        sys.stdout = text_trap
+        self._player1.calc_score()
+        self._player2.hand(self._card4, self._card1)
+        self._player2.calc_score()
 
     def test_determine_winner(self):
         self.assertEqual(functions.determine_winner(21, 21), "You both hit 21! Push")
@@ -20,30 +42,52 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(functions.determine_winner(18, 22), "Dealer went bust! You win!")
 
     def test_dealer_goes(self):
+        text_trap = io.StringIO()
+        sys.stdout = text_trap
+        self._player1.calc_score()
         self.assertEqual(functions.dealer_goes(21, "dealer"), "dealer")
         self.assertEqual(functions.dealer_goes(20, "dealer"), "dealer")
         self.assertEqual(functions.dealer_goes(22, "dealer"), None)
 
     def test_first_deal(self):
-        pass
+        x = functions.first_deal()
+        self.assertIsInstance(x, list)
+        self.assertIsInstance(x[0], tuple)
+        self.assertIsInstance(x[0][0], object)
+        self.assertIsInstance(x[0][0].suit, str)
+        self.assertIsInstance(x[0][0].value, str)
 
-    def test_hit_or_stand_q(self):
-        pass
+    ths_input_try1 = "hit"
+    ths_input_try2 = "stand"
+    ths_input_try3 = "asd"
+
+    @patch('builtins.input', return_value=ths_input_try1)
+    def test_hit_or_stand_q1(self, mock_input):
+        self.assertEqual(functions.hit_or_stand_q(), "hit")
+
+    @patch('builtins.input', return_value=ths_input_try2)
+    def test_hit_or_stand_q2(self, mock_input):
+        self.assertEqual(functions.hit_or_stand_q(), "stand")
 
     def test_hitting(self):
         pass
 
-    def test_player_moves(self):
-        pass
+    @patch("functions.hitting")
+    def test_player_moves(self, mock):
+        self.assertEqual(functions.player_moves(self._player1), "Congrats your at 21, let\'s see what the dealer has!")
+        functions.player_moves(self._player2)
+        self.assertTrue(mock.called)
 
     def test_check_for_black_jack(self):
-        pass
+        self.assertEqual(functions.check_for_black_jack(self._player1, self._player2), False)
+        self.assertEqual(functions.check_for_black_jack(self._player2, self._player1), False)
+        self.assertEqual(functions.check_for_black_jack(self._player2, self._player2), True)
 
     def test_dealer_moves(self):
-        pass
-
-    def test_announce_deal(self):
-        pass
+        text_trap = io.StringIO()
+        sys.stdout = text_trap
+        self.assertEqual(functions.dealer_moves(self._player1, self._player2), 21)
+        self.assertLess(self._player2.score, functions.dealer_moves(self._player2, self._player1))
 
 
 class TestCards(unittest.TestCase):
@@ -56,23 +100,26 @@ class TestCards(unittest.TestCase):
         assert isinstance(card, object)
 
 
-class Test_Deck(unittest.TestCase):
-    def test__deck_init(self):
+class test_Deck(unittest.TestCase):
+    def __int__(self):
+        pass
+
+    def test__deck(self):
         deck = classes.Deck()
-        assert isinstance(deck, classes.Deck)
-        assert isinstance(deck, object)
+        self.assertIsInstance(deck, classes.Deck)
+        self.assertIsInstance(deck, object)
 
     def test_deal(self):
         deck = classes.Deck()
         card1 = deck.deal()
         card2 = deck.deal()
         card3 = deck.deal()
-        assert isinstance(card1, classes.Card)
-        assert isinstance(card1, object)
-        assert isinstance(card2, classes.Card)
-        assert isinstance(card2, object)
-        assert isinstance(card3, classes.Card)
-        assert isinstance(card3, object)
+        self.assertIsInstance(card1, classes.Card)
+        self.assertIsInstance(card1, object)
+        self.assertIsInstance(card2, classes.Card)
+        self.assertIsInstance(card2, object)
+        self.assertIsInstance(card3, classes.Card)
+        self.assertIsInstance(card3, object)
 
 
 class test_Dealer_player(unittest.TestCase):
@@ -92,11 +139,9 @@ class test_Dealer_player(unittest.TestCase):
         self._card5 = classes.Card("Clubs", "K")
         self._card6 = classes.Card("Hearts", "A")
 
-
-
     def test_hand(self):
-        self.assertEqual(classes.Dealer_player.hand(self._player1, (4 , 5),(5,6)),[(4,5),(5,6)])
-        self.assertIsInstance(classes.Dealer_player.hand(self._player2,self._card1,self._card2),list)
+        self.assertEqual(classes.Dealer_player.hand(self._player1, (4, 5), (5, 6)), [(4, 5), (5, 6)])
+        self.assertIsInstance(classes.Dealer_player.hand(self._player2, self._card1, self._card2), list)
 
     def test_calc_score(self):
         self._player3.cards.append(self._card1)
@@ -122,6 +167,7 @@ class test_Dealer_player(unittest.TestCase):
         self.assertEqual(classes.Dealer_player.hit(self._player5, self._card1), 4)
         self.assertEqual(classes.Dealer_player.hit(self._player3, self._card1), 3)
         self.assertEqual(classes.Dealer_player.hit(self._player4, self._card1), 2)
+
 
 if __name__ == '__main__':
     unittest.main()
