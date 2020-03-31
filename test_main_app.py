@@ -33,12 +33,13 @@ class TestFunctions(unittest.TestCase):
         self._player2.calc_score()
 
     def test_determine_winner(self):
-        self.assertEqual(functions.determine_winner(21, 21), "You both hit 21! Push")
-        self.assertEqual(functions.determine_winner(18, 14), "Player wins with 18")
-        self.assertEqual(functions.determine_winner(13, 18), "Dealer wins with 18")
-        self.assertEqual(functions.determine_winner(40, 18), "You went bust, you lose")
-        self.assertEqual(functions.determine_winner(18, 18), "You both had the same score of 18 Push!")
-        self.assertEqual(functions.determine_winner(18, 22), "Dealer went bust! You win!")
+        with mock.patch("time.sleep"):
+            self.assertEqual(functions.determine_winner(21, 21), "You both hit 21! Push")
+            self.assertEqual(functions.determine_winner(18, 14), "Player wins with 18")
+            self.assertEqual(functions.determine_winner(13, 18), "Dealer wins with 18")
+            self.assertEqual(functions.determine_winner(40, 18), "You went bust, you lose")
+            self.assertEqual(functions.determine_winner(18, 18), "You both had the same score of 18 Push!")
+            self.assertEqual(functions.determine_winner(18, 22), "Dealer went bust! You win!")
 
     def test_dealer_goes(self):
         text_trap = io.StringIO()
@@ -69,13 +70,16 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(functions.hit_or_stand_q(), "stand")
 
     def test_hitting(self):
-        pass
+        with unittest.mock.patch("functions.hit_or_stand_q", return_value="hit"):
+            with mock.patch("functions.player_moves") as pm_patch:
+                functions.hitting(self._player2)
+                self.assertTrue(pm_patch.called)
 
     @patch("functions.hitting")
-    def test_player_moves(self, mock):
+    def test_player_moves(self, hitting_mock):
         self.assertEqual(functions.player_moves(self._player1), "Congrats your at 21, let\'s see what the dealer has!")
         functions.player_moves(self._player2)
-        self.assertTrue(mock.called)
+        self.assertTrue(hitting_mock.called)
 
     def test_check_for_black_jack(self):
         self.assertEqual(functions.check_for_black_jack(self._player1, self._player2), False)
@@ -85,8 +89,9 @@ class TestFunctions(unittest.TestCase):
     def test_dealer_moves(self):
         text_trap = io.StringIO()
         sys.stdout = text_trap
-        self.assertEqual(functions.dealer_moves(self._player1, self._player2), 21)
-        self.assertLess(self._player2.score, functions.dealer_moves(self._player2, self._player1))
+        with mock.patch("time.sleep"):
+            self.assertEqual(functions.dealer_moves(self._player1, self._player2), 21)
+            self.assertLess(self._player2.score, functions.dealer_moves(self._player2, self._player1))
 
 
 class TestCards(unittest.TestCase):
